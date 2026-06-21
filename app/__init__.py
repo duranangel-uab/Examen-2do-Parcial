@@ -53,20 +53,8 @@ def create_app():
         appbuilder.add_view(GraficaPlatosCategoriaView, "Platos por categoría", icon="fa-pie-chart", category="Gráficas")
         appbuilder.add_view(GraficaTopPlatosView, "Top 5 platos", icon="fa-bar-chart", category="Gráficas")
         
-        # Registrar página pública (sin menú)
+        # Registrar página pública (sin menú, ya que FAB_INDEX_VIEW en config.py
+        # la convierte en la vista raíz "/")
         appbuilder.add_view_no_menu(PublicView)
-        
-        # Establecer PublicView como la vista principal (raíz)
-        appbuilder.index_view = PublicView
-
-        # Desactivar la redirección automática al login
-        appbuilder.auth_views = None
-
-        # Configurar la vista pública sin autenticación
-        appbuilder.add_view_no_menu(PublicView)
-        appbuilder.index_view = PublicView
-
-        # Desactivar la protección de autenticación para la vista pública
-        appbuilder.app.config['AUTH_ROLE_PUBLIC'] = 'Public'
         
     return app

@@ -13,4 +13,8 @@ AUTH_ROLE_ADMIN = 'Admin'
 AUTH_USER_REGISTRATION = True
 AUTH_USER_REGISTRATION_ROLE = 'Usuario'
 
+# Hace que la vista pública (app/views/public.py) sea la página de inicio "/"
+# en lugar del índice por defecto de Flask-AppBuilder
+FAB_INDEX_VIEW = 'app.views.public.PublicView'
+
 BABEL_DEFAULT_LOCALE = 'es'
