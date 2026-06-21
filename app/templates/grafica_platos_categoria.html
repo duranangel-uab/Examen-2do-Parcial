@@ -1,0 +1,29 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>🥧 Platos por categoría</h2>
+    
+    {% if categorias %}
+    <canvas id="categoriaChart" width="400" height="200"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('categoriaChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {{ categorias|tojson }},
+                datasets: [{
+                    data: {{ cantidades|tojson }},
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'
+                    ]
+                }]
+            }
+        });
+    </script>
+    {% else %}
+    <div class="alert alert-warning">No hay datos de categorías.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>🏆 Platos más vendidos</h2>
+    
+    {% if platos %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Plato</th>
+                <th>Cantidad vendida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(platos|length) %}
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ platos[i] }}</td>
+                <td>{{ cantidades[i] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning">No hay datos de ventas.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>🧂 Ingredientes más usados</h2>
+    
+    {% if ingredientes %}
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Ingrediente</th>
+                <th>Cantidad total usada</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(ingredientes|length) %}
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ ingredientes[i] }}</td>
+                <td>{{ cantidades[i] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning">No hay datos de ingredientes.</div>
+    {% endif %}
+</div>
+{% endblock %}

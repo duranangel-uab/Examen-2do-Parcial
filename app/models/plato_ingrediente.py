@@ -1,4 +1,4 @@
-from app import db
+from app.extensions import db
 
 class PlatoIngrediente(db.Model):
     __tablename__ = 'plato_ingrediente'

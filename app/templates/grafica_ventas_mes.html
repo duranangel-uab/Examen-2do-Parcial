@@ -1,0 +1,37 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>📈 Ventas por mes</h2>
+    
+    {% if meses %}
+    <canvas id="ventasChart" width="400" height="200"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('ventasChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ meses|tojson }},
+                datasets: [{
+                    label: 'Ventas',
+                    data: {{ montos|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+    {% else %}
+    <div class="alert alert-warning">No hay datos de ventas.</div>
+    {% endif %}
+</div>
+{% endblock %}
