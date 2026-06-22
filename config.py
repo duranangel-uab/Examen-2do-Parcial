@@ -5,7 +5,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 SECRET_KEY = 'clave_secreta_muy_segura_123456789'
 
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/restaurante_el_deseo'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/rest_deseo_examen_2do_parcial'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 AUTH_TYPE = AUTH_DB
