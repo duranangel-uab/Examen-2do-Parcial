@@ -1,4 +1,4 @@
-from flask_appbuilder import BaseView, expose
+from flask_appbuilder import BaseView, expose, has_access
 from app import db
 from app.models.pedido import Pedido
 from datetime import datetime, timedelta
@@ -8,6 +8,7 @@ class GraficaVentasMesView(BaseView):
     route_base = "/grafica_ventas_mes"
     
     @expose("/")
+    @has_access
     def list(self):
         # Últimos 6 meses
         hoy = datetime.now().date()

@@ -1,4 +1,4 @@
-from flask_appbuilder import BaseView, expose
+from flask_appbuilder import BaseView, expose, has_access
 from app import db
 from app.models.plato import Plato
 from app.models.detalle_pedido import DetallePedido
@@ -8,6 +8,7 @@ class ReportePlatosPopularesView(BaseView):
     route_base = "/reporte_platos_populares"
     
     @expose("/")
+    @has_access
     def list(self):
         datos = (
             db.session.query(

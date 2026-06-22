@@ -27,7 +27,47 @@
                     <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="/menu">Menú</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contacto">Contacto</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Ingresar</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="panelDropdown" role="button" data-bs-toggle="dropdown">
+                                👤 {{ current_user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                {% set rol = current_user.roles[0].name if current_user.roles else '' %}
+                                {% if rol == 'Admin' %}
+                                    <li><a class="dropdown-item" href="/categoriaview/list/">Categorías</a></li>
+                                    <li><a class="dropdown-item" href="/platoview/list/">Platos</a></li>
+                                    <li><a class="dropdown-item" href="/ingredienteview/list/">Ingredientes</a></li>
+                                    <li><a class="dropdown-item" href="/clienteview/list/">Clientes</a></li>
+                                    <li><a class="dropdown-item" href="/mesaview/list/">Mesas</a></li>
+                                    <li><a class="dropdown-item" href="/empleadoview/list/">Empleados</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/reporte_ventas/">Reporte de Ventas</a></li>
+                                    <li><a class="dropdown-item" href="/reporte_platos_populares/">Platos Populares</a></li>
+                                    <li><a class="dropdown-item" href="/reporte_ingredientes_usados/">Ingredientes Usados</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/grafica_ventas_mes/">Gráfica Ventas/Mes</a></li>
+                                    <li><a class="dropdown-item" href="/grafica_platos_categoria/">Gráfica Platos/Categoría</a></li>
+                                    <li><a class="dropdown-item" href="/grafica_top_platos/">Gráfica Top Platos</a></li>
+                                {% elif rol == 'Supervisor' %}
+                                    <li><a class="dropdown-item" href="/reporte_ventas/">Reporte de Ventas</a></li>
+                                    <li><a class="dropdown-item" href="/reporte_platos_populares/">Platos Populares</a></li>
+                                    <li><a class="dropdown-item" href="/reporte_ingredientes_usados/">Ingredientes Usados</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/grafica_ventas_mes/">Gráfica Ventas/Mes</a></li>
+                                    <li><a class="dropdown-item" href="/grafica_platos_categoria/">Gráfica Platos/Categoría</a></li>
+                                    <li><a class="dropdown-item" href="/grafica_top_platos/">Gráfica Top Platos</a></li>
+                                {% elif rol == 'Usuario' %}
+                                    <li><a class="dropdown-item" href="/clienteview/list/">Clientes</a></li>
+                                    <li><a class="dropdown-item" href="/mesaview/list/">Mesas</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout/">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="/categoriaview/list/">Ingresar</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -38,9 +78,30 @@
             <h1>🍽️ Restaurante El Deseo</h1>
             <p class="lead">Sabores que enamoran, en el corazón de Cochabamba</p>
             <a href="/menu" class="btn btn-reserva">Ver Menú</a>
-            <a href="/login" class="btn btn-login">Ingresar</a>
+            <a href="/categoriaview/list/" class="btn btn-login">Ingresar</a>
         </div>
     </div>
+
+    {% if dashboard %}
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">📊 Panel de {{ dashboard.rol }}</h2>
+            <div class="row g-4 justify-content-center">
+                {% for tarjeta in dashboard.tarjetas %}
+                <div class="col-md-3 col-sm-6">
+                    <div class="card border-{{ tarjeta.color }} h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <div style="font-size: 2.5rem;">{{ tarjeta.icono }}</div>
+                            <h3 class="mt-2 mb-0 text-{{ tarjeta.color }}">{{ tarjeta.valor }}</h3>
+                            <p class="text-muted mb-0">{{ tarjeta.titulo }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
     <section class="py-5">
         <div class="container text-center">

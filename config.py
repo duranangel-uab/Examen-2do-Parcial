@@ -17,4 +17,6 @@ AUTH_USER_REGISTRATION_ROLE = 'Usuario'
 # en lugar del índice por defecto de Flask-AppBuilder
 FAB_INDEX_VIEW = 'app.views.public.PublicView'
 
+
+
 BABEL_DEFAULT_LOCALE = 'es'

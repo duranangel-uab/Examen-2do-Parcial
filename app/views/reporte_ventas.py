@@ -1,5 +1,5 @@
 from flask import request
-from flask_appbuilder import BaseView, expose
+from flask_appbuilder import BaseView, expose, has_access
 from app import db
 from app.models.pedido import Pedido
 from app.models.detalle_pedido import DetallePedido
@@ -10,6 +10,7 @@ class ReporteVentasView(BaseView):
     route_base = "/reporte_ventas"
     
     @expose("/", methods=["GET", "POST"])
+    @has_access
     def list(self):
         # Obtener el período seleccionado (por defecto: hoy)
         periodo = request.form.get('periodo', 'hoy')

@@ -1,4 +1,4 @@
-from flask_appbuilder import BaseView, expose
+from flask_appbuilder import BaseView, expose, has_access
 from app import db
 from app.models.categoria import Categoria
 from app.models.plato import Plato
@@ -8,6 +8,7 @@ class GraficaPlatosCategoriaView(BaseView):
     route_base = "/grafica_platos_categoria"
     
     @expose("/")
+    @has_access
     def list(self):
         datos = (
             db.session.query(
