@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de {{ rol }} - El Deseo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f5f7; }
+        .panel-header {
+            background: linear-gradient(135deg, #2c2c2c, #4a4a4a);
+            color: white;
+            padding: 30px 0;
+        }
+        .panel-header h1 { font-size: 1.8rem; margin-bottom: 0; }
+        .panel-header .rol-badge {
+            font-size: 0.95rem;
+            background-color: #d4a373;
+            padding: 4px 14px;
+            border-radius: 20px;
+        }
+        .kpi-card {
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .kpi-card .icono { font-size: 2.2rem; }
+        .acceso-card {
+            border: none;
+            border-radius: 16px;
+            text-decoration: none;
+            display: block;
+            padding: 28px 10px;
+            text-align: center;
+            background-color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            color: #333;
+        }
+        .acceso-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+            color: #333;
+        }
+        .acceso-card .icono {
+            font-size: 2.6rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .acceso-card .titulo {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .acceso-card.color-primary { border-top: 4px solid #0d6efd; }
+        .acceso-card.color-secondary { border-top: 4px solid #6c757d; }
+        .acceso-card.color-success { border-top: 4px solid #198754; }
+        .acceso-card.color-info { border-top: 4px solid #0dcaf0; }
+        .seccion-titulo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #555;
+            margin: 30px 0 16px;
+        }
+    </style>
+</head>
+<body>
+    <header class="panel-header">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h1>🍽️ El Deseo &mdash; Panel</h1>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="rol-badge">{{ rol }}</span>
+                <span>👤 {{ current_user.username }}</span>
+                <a href="/logout/" class="btn btn-sm btn-outline-light">Salir</a>
+                <a href="/" class="btn btn-sm btn-outline-light">Ver sitio público</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container py-4">
+
+        {% if kpis %}
+        <div class="row g-3 mb-2">
+            {% for kpi in kpis %}
+            <div class="col-md-3 col-sm-6">
+                <div class="card kpi-card h-100 text-center">
+                    <div class="card-body">
+                        <div class="icono">{{ kpi.icono }}</div>
+                        <h3 class="mt-1 mb-0 text-{{ kpi.color }}">{{ kpi.valor }}</h3>
+                        <p class="text-muted mb-0">{{ kpi.titulo }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="seccion-titulo">Accesos rápidos</div>
+        <div class="row g-3">
+            {% for acceso in accesos %}
+            <div class="col-md-2 col-sm-4 col-6">
+                <a href="{{ acceso.url }}" class="acceso-card color-{{ acceso.color }}">
+                    <span class="icono">{{ acceso.icono }}</span>
+                    <span class="titulo">{{ acceso.titulo }}</span>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
