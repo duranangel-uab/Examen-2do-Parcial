@@ -89,5 +89,12 @@ with app.app_context():
     print("\nAsignando permisos a Usuario (Clientes y Mesas, operativo)...")
     asignar_permisos(sm, usuario, VISTAS_USUARIO, PERMISOS_OPERATIVOS)
 
+    print("\nAsignando acceso al panel interno (/panel) a Supervisor y Usuario...")
+    for role in (supervisor, usuario):
+        pvm_panel = sm.find_permission_view_menu("can_panel", "PublicView")
+        if pvm_panel and pvm_panel not in role.permissions:
+            role.permissions.append(pvm_panel)
+            print(f"  + {role.name}: can_panel en PublicView")
+
     db.session.commit()
     print("\n🎉 Roles y permisos configurados exitosamente.")

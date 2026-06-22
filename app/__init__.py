@@ -56,5 +56,26 @@ def create_app():
         # Registrar página pública (sin menú, ya que FAB_INDEX_VIEW en config.py
         # la convierte en la vista raíz "/")
         appbuilder.add_view_no_menu(PublicView)
+
+        # --- Ajuste del botón "Atrás" en los listados/formularios ---
+        # Flask-AppBuilder usa appbuilder.get_url_for_index como destino de
+        # respaldo del botón "Atrás" cuando no hay suficiente historial de
+        # navegación guardado en la sesión. Por defecto eso apunta a la
+        # página pública del restaurante (nuestro FAB_INDEX_VIEW). Para que
+        # un usuario que ya inició sesión regrese a SU panel (/panel) en
+        # vez de la portada pública, sobreescribimos esa propiedad.
+        from flask import url_for
+        from flask_login import current_user
+
+        def _get_url_for_index_segun_sesion(self):
+            if current_user.is_authenticated:
+                return url_for("PublicView.panel")
+            if self._indexview is None:
+                return ""
+            return url_for(
+                "%s.%s" % (self._indexview.endpoint, self._indexview.default_view)
+            )
+
+        type(appbuilder).get_url_for_index = property(_get_url_for_index_segun_sesion)
         
     return app
