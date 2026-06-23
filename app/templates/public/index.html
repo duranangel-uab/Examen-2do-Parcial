@@ -3,22 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurante El Deseo</title>
+    <title>Restaurante El Deseo — Sabores que enamoran</title>
+    <meta name="description" content="Restaurante El Deseo en Cochabamba: trucha, chanka de pollo, picante de pollo, pique macho y más. Pedidos por WhatsApp.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        .hero { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200'); background-size: cover; background-position: center; color: white; padding: 100px 0; text-align: center; }
-        .hero h1 { font-size: 4rem; font-weight: bold; }
-        .hero p { font-size: 1.5rem; }
-        .btn-reserva { background-color: #d4a373; border: none; color: white; padding: 12px 30px; font-size: 1.2rem; border-radius: 30px; }
+        body { font-family: 'Poppins', sans-serif; background-color: #fdfaf6; }
+        h1, h2, h3, .brand-font { font-family: 'Playfair Display', serif; }
+
+        .hero {
+            background: linear-gradient(rgba(20,10,5,0.55), rgba(20,10,5,0.65)), url('https://images.unsplash.com/photo-1544025162-d76694265947?w=1400&q=80');
+            background-size: cover; background-position: center;
+            color: white; padding: 140px 0 110px; text-align: center;
+        }
+        .hero h1 { font-size: 3.6rem; font-weight: 700; }
+        .hero p.lead { font-size: 1.3rem; opacity: .95; }
+        .badge-horario {
+            background-color: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4);
+            border-radius: 30px; padding: 8px 20px; display: inline-block; margin-bottom: 22px; font-size: .95rem;
+        }
+        .btn-reserva { background-color: #d4a373; border: none; color: white; padding: 13px 32px; font-size: 1.1rem; border-radius: 30px; font-weight: 500; }
         .btn-reserva:hover { background-color: #b8895e; color: white; }
-        .btn-login { background-color: #6c757d; border: none; color: white; padding: 12px 30px; font-size: 1.2rem; border-radius: 30px; text-decoration: none; margin-left: 10px; }
-        .btn-login:hover { background-color: #5a6268; color: white; }
+        .btn-whatsapp-hero { background-color: #25D366; border: none; color: white; padding: 13px 32px; font-size: 1.1rem; border-radius: 30px; font-weight: 500; text-decoration: none; margin-left: 12px; }
+        .btn-whatsapp-hero:hover { background-color: #1da851; color: white; }
+
+        .seccion-titulo { text-align: center; margin-bottom: 12px; font-size: 2.2rem; color: #3a2a1f; }
+        .seccion-subtitulo { text-align: center; color: #8a7565; margin-bottom: 45px; font-size: 1.05rem; }
+
+        .plato-card { border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.08); transition: transform .25s, box-shadow .25s; height: 100%; }
+        .plato-card:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(0,0,0,0.14); }
+        .plato-card img { height: 200px; object-fit: cover; width: 100%; }
+        .plato-card .badge-popular { position: absolute; top: 12px; left: 12px; background-color: #d4a373; color: white; font-size: .75rem; padding: 5px 12px; border-radius: 20px; font-weight: 500; }
+        .plato-card .precio { color: #b8895e; font-weight: 600; font-size: 1.25rem; }
+        .plato-card-img-wrap { position: relative; }
+
+        .nosotros-bg { background-color: #2c2118; color: #f3e9dd; padding: 70px 0; }
+        .nosotros-bg h2 { color: #ecd9bd; }
+        .nosotros-bg p { font-size: 1.05rem; line-height: 1.8; color: #d8c8b5; }
+
+        .ventaja-icono { font-size: 2.6rem; margin-bottom: 14px; }
+        .ventaja-card { text-align: center; padding: 20px; }
+        .ventaja-card h5 { color: #3a2a1f; font-weight: 600; }
+        .ventaja-card p { color: #8a7565; font-size: .95rem; }
+
+        .testimonio-card { background: white; border-radius: 16px; padding: 28px; box-shadow: 0 4px 14px rgba(0,0,0,0.06); height: 100%; }
+        .testimonio-card .estrellas { color: #d4a373; font-size: 1.1rem; margin-bottom: 10px; }
+        .testimonio-card p.texto { color: #5a4a3d; font-style: italic; }
+        .testimonio-card .autor { font-weight: 600; color: #3a2a1f; margin-top: 14px; }
+
+        .contacto-bg { background-color: #3a2a1f; color: #f3e9dd; padding: 60px 0; }
+        .contacto-bg h2 { color: #ecd9bd; }
+        .red-social-btn { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.25); color: #f3e9dd; padding: 10px 22px; border-radius: 30px; text-decoration: none; margin: 6px; font-size: .95rem; }
+        .red-social-btn:hover { background: rgba(255,255,255,.18); color: white; }
+        .btn-whatsapp { background-color: #25D366; border: none; color: white; padding: 13px 32px; border-radius: 30px; font-weight: 500; text-decoration: none; display: inline-block; }
+        .btn-whatsapp:hover { background-color: #1da851; color: white; }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">🍽️ El Deseo</a>
+            <a class="navbar-brand brand-font" href="/">🍽️ El Deseo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -30,7 +74,7 @@
                     {% if current_user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="/panel">Mi Panel</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="/panel">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/login/">Ingresar</a></li>
                     {% endif %}
                 </ul>
             </div>
@@ -39,19 +83,175 @@
 
     <div class="hero">
         <div class="container">
-            <h1>🍽️ Restaurante El Deseo</h1>
-            <p class="lead">Sabores que enamoran, en el corazón de Cochabamba</p>
-            <a href="/menu" class="btn btn-reserva">Ver Menú</a>
-            <a href="/panel" class="btn btn-login">{{ 'Mi Panel' if current_user.is_authenticated else 'Ingresar' }}</a>
+            <div class="badge-horario">🕐 Abierto hoy &middot; 12:00 — 23:00</div>
+            <h1>Sabores que enamoran</h1>
+            <p class="lead">Comida boliviana casera, en el corazón de Cochabamba</p>
+            <div class="mt-4">
+                <a href="/menu" class="btn btn-reserva">Ver Menú</a>
+                <a href="https://wa.me/59170000000" target="_blank" class="btn-whatsapp-hero">📲 Pedir por WhatsApp</a>
+            </div>
         </div>
     </div>
 
     <section class="py-5">
+        <div class="container">
+            <h2 class="seccion-titulo">Lo más pedido</h2>
+            <p class="seccion-subtitulo">Los platos favoritos de nuestros clientes, hechos como en casa</p>
+            <div class="row g-4">
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="plato-card">
+                        <div class="plato-card-img-wrap">
+                            <span class="badge-popular">⭐ Más pedido</span>
+                            <img src="https://images.unsplash.com/photo-1432139509613-5c4255815697?w=500&q=80" alt="Pique macho">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Pique Macho</h5>
+                            <p class="card-text text-muted small">Carne, papas fritas, salchicha, huevo y locoto, todo en un solo plato.</p>
+                            <p class="precio mb-0">Bs 45</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="plato-card">
+                        <div class="plato-card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=500&q=80" alt="Trucha frita">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Trucha</h5>
+                            <p class="card-text text-muted small">Trucha fresca dorada, acompañada de arroz, ensalada y papas.</p>
+                            <p class="precio mb-0">Bs 50</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="plato-card">
+                        <div class="plato-card-img-wrap">
+                            <span class="badge-popular">⭐ Más pedido</span>
+                            <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80" alt="Chanka de pollo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Chanka de Pollo</h5>
+                            <p class="card-text text-muted small">Pollo desmenuzado con chuño, papa y un toque picante tradicional.</p>
+                            <p class="precio mb-0">Bs 38</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="plato-card">
+                        <div class="plato-card-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80" alt="Picante de pollo">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Picante de Pollo</h5>
+                            <p class="card-text text-muted small">Pollo en salsa de ají amarillo, con arroz, papa y chuño.</p>
+                            <p class="precio mb-0">Bs 40</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center mt-4">
+                <a href="/menu" class="btn btn-outline-dark rounded-pill px-4">Ver carta completa</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="nosotros-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Cocina tradicional" class="img-fluid rounded-4 shadow">
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <h2>Tradición cochabambina, hecha con cariño</h2>
+                    <p>En El Deseo cocinamos como en casa: ingredientes frescos del mercado local,
+                        recetas que pasan de generación en generación, y el sabor que hace que cada
+                        cliente vuelva. Más de una década sirviendo los platos que Cochabamba ama.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="seccion-titulo">¿Por qué elegirnos?</h2>
+            <p class="seccion-subtitulo">Lo que nos hace diferentes</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="ventaja-card">
+                        <div class="ventaja-icono">🥩</div>
+                        <h5>Ingredientes frescos</h5>
+                        <p>Compramos cada día en el mercado para garantizar frescura en cada plato.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="ventaja-card">
+                        <div class="ventaja-icono">🏡</div>
+                        <h5>Ambiente familiar</h5>
+                        <p>Un espacio cálido y acogedor, ideal para compartir en familia o con amigos.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="ventaja-card">
+                        <div class="ventaja-icono">⚡</div>
+                        <h5>Servicio rápido</h5>
+                        <p>Pedidos para llevar y atención en mesa con tiempos de espera mínimos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color:#f3eade;">
+        <div class="container">
+            <h2 class="seccion-titulo">Lo que dicen nuestros clientes</h2>
+            <p class="seccion-subtitulo">Opiniones reales de quienes ya nos visitaron</p>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonio-card">
+                        <div class="estrellas">★★★★★</div>
+                        <p class="texto">"El pique macho es el mejor que probé en Cochabamba. Porciones generosas y muy buen sabor."</p>
+                        <p class="autor">— Daniela M.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonio-card">
+                        <div class="estrellas">★★★★★</div>
+                        <p class="texto">"La trucha siempre fresca y el ambiente es muy agradable para ir en familia."</p>
+                        <p class="autor">— Jorge A.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonio-card">
+                        <div class="estrellas">★★★★★</div>
+                        <p class="texto">"Pido siempre por WhatsApp y llega rapidísimo. El picante de pollo es espectacular."</p>
+                        <p class="autor">— Carla R.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contacto-bg">
         <div class="container text-center">
-            <h2>📍 Ubicación</h2>
-            <p><strong>Av. Kilometro 7 esquina Fortin Alihuata, Cochabamba</strong></p>
+            <h2 class="mb-3">📍 Visítanos o haz tu pedido</h2>
+            <p class="mb-1"><strong>Av. Kilometro 7 esquina Fortin Alihuata, Cochabamba</strong></p>
+            <p class="mb-4">🕐 Abierto todos los días &middot; 12:00 — 23:00</p>
+
+            <a href="https://wa.me/59170000000" target="_blank" class="btn-whatsapp mb-4">📲 Hacer pedido por WhatsApp</a>
+
+            <div class="mb-4">
+                <a href="https://facebook.com" target="_blank" class="red-social-btn">📘 Facebook</a>
+                <a href="https://instagram.com" target="_blank" class="red-social-btn">📸 Instagram</a>
+                <a href="tel:+59170000000" class="red-social-btn">📞 Llamar</a>
+            </div>
+
             <div class="mt-3">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3787.425962511228!2d-66.1653920842251!3d-17.34308740450713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3740a96a51e09%3A0x6b36c1ed7c54755c!2sCochabamba%2C%20Bolivia!5e0!3m2!1ses!2s!4v1620000000000" width="100%" height="300" style="border:0; max-width:600px;" allowfullscreen></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3787.425962511228!2d-66.1653920842251!3d-17.34308740450713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3740a96a51e09%3A0x6b36c1ed7c54755c!2sCochabamba%2C%20Bolivia!5e0!3m2!1ses!2s!4v1620000000000" width="100%" height="300" style="border:0; max-width:600px; border-radius:12px;" allowfullscreen></iframe>
             </div>
         </div>
     </section>
