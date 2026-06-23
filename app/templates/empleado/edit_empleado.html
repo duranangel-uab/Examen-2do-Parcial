@@ -1,0 +1,24 @@
+{% extends "appbuilder/general/model/edit.html" %}
+
+{#
+  Extiende el template estándar de "Editar" de Flask-AppBuilder solo
+  para activar el modo "tags" de Select2 en el campo "Cargo": permite
+  elegir un cargo ya existente Y también escribir uno nuevo que no
+  estaba en la lista.
+#}
+
+{% block add_tail_js %}
+    {{ super() }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.jQuery && jQuery("#cargo").length) {
+                jQuery("#cargo").select2({
+                    tags: true,
+                    theme: "bootstrap",
+                    placeholder: "Seleccione o escriba un cargo nuevo",
+                    allowClear: true
+                });
+            }
+        });
+    </script>
+{% endblock %}
