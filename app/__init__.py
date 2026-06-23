@@ -64,11 +64,19 @@ def create_app():
         # página pública del restaurante (nuestro FAB_INDEX_VIEW). Para que
         # un usuario que ya inició sesión regrese a SU panel (/panel) en
         # vez de la portada pública, sobreescribimos esa propiedad.
+        #
+        # IMPORTANTE: solo se usa /panel si el usuario realmente tiene
+        # permiso de verlo (can_panel). De lo contrario, redirigir siempre
+        # a /panel para cualquier usuario autenticado puede causar un
+        # bucle infinito de redirecciones cuando ese usuario no tiene el
+        # permiso (login -> /panel -> Acceso denegado -> /login -> ...).
         from flask import url_for
         from flask_login import current_user
 
         def _get_url_for_index_segun_sesion(self):
-            if current_user.is_authenticated:
+            if current_user.is_authenticated and self.sm.has_access(
+                "can_panel", "PublicView"
+            ):
                 return url_for("PublicView.panel")
             if self._indexview is None:
                 return ""
