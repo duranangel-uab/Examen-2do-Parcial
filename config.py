@@ -23,4 +23,9 @@ AUTH_USER_REGISTRATION_ROLE = 'Usuario'
 # en lugar del índice por defecto de Flask-AppBuilder
 FAB_INDEX_VIEW = 'app.views.public.PublicView'
 
+# Cambia el nombre que muestra Flask-AppBuilder en el navbar de las
+# vistas administrativas (Categorías, Platos, Mesas, etc.), de "F.A.B."
+# por defecto a "El Deseo".
+APP_NAME = 'El Deseo'
+
 BABEL_DEFAULT_LOCALE = 'es'
