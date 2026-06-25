@@ -37,7 +37,9 @@ VISTAS_USUARIO = [
 ]
 
 # Permisos que se otorgan sobre esas vistas
-PERMISOS_LECTURA = ["can_list", "can_show"]
+# can_pronosticos es necesario para que Supervisor pueda usar el botón
+# "Generar pronósticos con IA" en las 3 vistas de gráficas.
+PERMISOS_LECTURA = ["can_list", "can_show", "can_pronosticos"]
 PERMISOS_OPERATIVOS = ["can_list", "can_show", "can_add", "can_edit"]
 
 # Permiso de menú, necesario para que el rol vea el enlace en la barra lateral

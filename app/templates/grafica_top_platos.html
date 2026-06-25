@@ -34,5 +34,57 @@
     {% else %}
     <div class="alert alert-warning">No hay datos de ventas.</div>
     {% endif %}
+
+    <div class="mt-4">
+        <button id="btnPronosticos" class="btn btn-outline-primary" onclick="generarPronosticos()">
+            🔮 Generar pronósticos con IA
+        </button>
+        <div id="pronosticosBox" class="mt-3" style="display:none;">
+            <div class="card">
+                <div class="card-header">Pronósticos generados por IA</div>
+                <ul id="listaPronosticos" class="list-group list-group-flush"></ul>
+            </div>
+        </div>
+        <div id="pronosticosError" class="alert alert-danger mt-3" style="display:none;"></div>
+    </div>
+
+    <script>
+        async function generarPronosticos() {
+            const btn = document.getElementById('btnPronosticos');
+            const box = document.getElementById('pronosticosBox');
+            const errorBox = document.getElementById('pronosticosError');
+            const lista = document.getElementById('listaPronosticos');
+
+            btn.disabled = true;
+            btn.textContent = 'Generando...';
+            box.style.display = 'none';
+            errorBox.style.display = 'none';
+
+            try {
+                const resp = await fetch('/grafica_top_platos/pronosticos', { method: 'POST' });
+                const data = await resp.json();
+
+                if (data.ok) {
+                    lista.innerHTML = '';
+                    data.pronosticos.forEach(function (p) {
+                        const li = document.createElement('li');
+                        li.className = 'list-group-item';
+                        li.textContent = p;
+                        lista.appendChild(li);
+                    });
+                    box.style.display = 'block';
+                } else {
+                    errorBox.textContent = data.error || 'No se pudieron generar los pronósticos.';
+                    errorBox.style.display = 'block';
+                }
+            } catch (e) {
+                errorBox.textContent = 'Error de conexión al generar pronósticos.';
+                errorBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🔮 Generar pronósticos con IA';
+            }
+        }
+    </script>
 </div>
 {% endblock %}
