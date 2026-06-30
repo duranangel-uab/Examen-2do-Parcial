@@ -1,0 +1,32 @@
+Aquí están los comandos completos para levantar el proyecto desde cero en CMD:
+
+1. Abre CMD y navega al proyecto
+cmdcd C:\Users\hp\Desktop\proyectos\Examen-2do-Parcial
+2. Activa el entorno virtual
+cmdvenv\Scripts\activate
+Deberías ver (venv) al inicio de la línea.
+
+EN UN EQUIPO NUEVO
+3. Instala dependencias
+
+cmdpip install -r requirements.txt
+
+4. Crea las tablas en la base de datos
+
+cmdpython crear_tablas.py
+
+5. Carga los datos iniciales
+
+cmdpython cargar_datos.py
+
+6. Configura los roles y permisos
+
+cmdpython configurar_roles.py
+
+7. Corre el servidor
+
+cmdpython run.py
+
+Luego abre el navegador en: http://127.0.0.1:5000
+
+

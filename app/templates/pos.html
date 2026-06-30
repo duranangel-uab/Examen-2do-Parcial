@@ -1,0 +1,394 @@
+{% extends "appbuilder/base.html" %}
+
+{% block content %}
+<style>
+    .pos-container { display: flex; gap: 20px; }
+    .pos-catalogo { flex: 2; }
+    .pos-carrito { flex: 1; min-width: 320px; }
+    .pos-categoria-titulo { margin-top: 18px; margin-bottom: 10px; color: #555; }
+    .plato-card {
+        border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;
+        text-align: center; cursor: pointer; transition: transform .15s, box-shadow .15s;
+        background: white; height: 100%;
+    }
+    .plato-card:hover { transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,0.1); }
+    .plato-card .imagen-wrap { width: 100%; height: 110px; background: #f1f1f1; overflow: hidden; display:flex; align-items:center; justify-content:center; }
+    .plato-card .imagen-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .plato-card .imagen-wrap .sin-imagen { font-size: 2rem; color: #ccc; }
+    .plato-card .info { padding: 10px; }
+    .plato-card .nombre { font-weight: 600; font-size: .95rem; margin-bottom: 4px; }
+    .plato-card .precio { color: #198754; font-weight: 600; }
+    .cambiar-imagen-link {
+        font-size: .72rem; color: #888; text-align: center; padding: 3px 0;
+        cursor: pointer; background: #f8f9fa; border-top: 1px solid #eee;
+    }
+    .cambiar-imagen-link:hover { color: #0d6efd; background: #eef3ff; }
+    .carrito-box { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); position: sticky; top: 20px; }
+    .carrito-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+    .carrito-item .cantidad-controles button { width: 26px; }
+    .carrito-total { font-size: 1.3rem; font-weight: 700; color: #2c2118; }
+    .nuevo-cliente-link { font-size: .85rem; }
+</style>
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="/panel" class="btn btn-sm btn-secondary"><i class="fa fa-arrow-left"></i> Volver al Panel</a>
+        <button class="btn btn-sm btn-outline-dark" onclick="abrirPantallaCliente()">🖥️ Mostrar pantalla al cliente</button>
+    </div>
+    <h2>🧾 Punto de Venta</h2>
+
+    <div class="pos-container">
+
+        <div class="pos-catalogo">
+            {% for categoria in categorias %}
+                {% set platos_categoria = platos | selectattr('categoria_id', 'equalto', categoria.id) | list %}
+                {% if platos_categoria %}
+                <h5 class="pos-categoria-titulo">{{ categoria.nombre }}</h5>
+                <div class="row g-3">
+                    {% for plato in platos_categoria %}
+                    <div class="col-md-3 col-sm-4 col-6">
+                        <div class="plato-card">
+                            <div class="imagen-wrap" onclick="agregarAlCarrito({{ plato.id }}, '{{ plato.nombre|replace("'", "") }}', {{ plato.precio }}, '{{ (plato.imagen_url or '')|replace("'", "") }}')">
+                                {% if plato.imagen_url %}
+                                <img id="img-plato-{{ plato.id }}" src="{{ plato.imagen_url }}" alt="{{ plato.nombre }}">
+                                {% else %}
+                                <span class="sin-imagen" id="img-plato-{{ plato.id }}">🍽️</span>
+                                {% endif %}
+                            </div>
+                            <div class="cambiar-imagen-link" onclick="abrirCambiarImagen(event, {{ plato.id }})">+ cambiar imagen</div>
+                            <div class="info" onclick="agregarAlCarrito({{ plato.id }}, '{{ plato.nombre|replace("'", "") }}', {{ plato.precio }}, '{{ (plato.imagen_url or '')|replace("'", "") }}')">
+                                <div class="nombre">{{ plato.nombre }}</div>
+                                <div class="precio">Bs {{ "%.2f"|format(plato.precio) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="pos-carrito">
+            <div class="carrito-box">
+                <h5>🛒 Carrito</h5>
+
+                <div class="mb-2">
+                    <label class="form-label small mb-1">Cliente</label>
+                    <select id="selCliente" class="form-select form-select-sm">
+                        <option value="">Seleccione un cliente...</option>
+                        {% for cliente in clientes %}
+                        <option value="{{ cliente.id }}">{{ cliente.nombre }} {{ cliente.apellido }}</option>
+                        {% endfor %}
+                    </select>
+                    <a href="#" class="nuevo-cliente-link" onclick="mostrarFormClienteNuevo(); return false;">+ Cliente nuevo</a>
+                </div>
+
+                <div id="formClienteNuevo" class="border rounded p-2 mb-2" style="display:none; background:#f8f9fa;">
+                    <input id="nuevoClienteNombre" class="form-control form-control-sm mb-1" placeholder="Nombre">
+                    <input id="nuevoClienteApellido" class="form-control form-control-sm mb-1" placeholder="Apellido">
+                    <button class="btn btn-sm btn-primary w-100" onclick="crearClienteNuevo()">Guardar cliente</button>
+                </div>
+
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="chkParaLlevar" onchange="toggleParaLlevar()">
+                    <label class="form-check-label small" for="chkParaLlevar">Para llevar (sin mesa)</label>
+                </div>
+
+                <div class="mb-2" id="grupoMesa">
+                    <label class="form-label small mb-1">Mesa</label>
+                    <select id="selMesa" class="form-select form-select-sm">
+                        <option value="">Seleccione una mesa...</option>
+                        {% for mesa in mesas %}
+                        <option value="{{ mesa.id }}">Mesa {{ mesa.numero }} ({{ mesa.estado }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small mb-1">Empleado</label>
+                    <select id="selEmpleado" class="form-select form-select-sm">
+                        <option value="">Seleccione un empleado...</option>
+                        {% for empleado in empleados %}
+                        <option value="{{ empleado.id }}">{{ empleado.nombre }} {{ empleado.apellido }} ({{ empleado.cargo }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <hr>
+
+                <div id="carritoItems">
+                    <p class="text-muted small">El carrito está vacío.</p>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>Total:</span>
+                    <span id="carritoTotal" class="carrito-total">Bs 0.00</span>
+                </div>
+
+                <button class="btn btn-success w-100 mt-3" onclick="confirmarVenta()">✅ Confirmar venta</button>
+
+                <div id="posMensaje" class="mt-3"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal para cambiar la imagen de un plato -->
+<div class="modal fade" id="modalCambiarImagen" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar imagen del plato</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="cambiarImagenPlatoId">
+
+                <label class="form-label small">Subir imagen desde tu equipo</label>
+                <input type="file" id="cambiarImagenArchivo" class="form-control mb-3" accept="image/png,image/jpeg,image/gif,image/webp">
+
+                <div class="text-center text-muted small mb-2">— o —</div>
+
+                <label class="form-label small">Pegar URL de una imagen</label>
+                <input type="text" id="cambiarImagenUrl" class="form-control mb-3" placeholder="https://...">
+
+                <div id="cambiarImagenMensaje"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarImagenPlato()">Guardar imagen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let carrito = {}; // { plato_id: { nombre, precio, cantidad, imagen } }
+
+    function toggleParaLlevar() {
+        const esParaLlevar = document.getElementById('chkParaLlevar').checked;
+        document.getElementById('grupoMesa').style.display = esParaLlevar ? 'none' : 'block';
+    }
+
+    function renderCarrito() {
+        const cont = document.getElementById('carritoItems');
+        const ids = Object.keys(carrito);
+
+        if (ids.length === 0) {
+            cont.innerHTML = '<p class="text-muted small">El carrito está vacío.</p>';
+            document.getElementById('carritoTotal').textContent = 'Bs 0.00';
+            enviarCarritoEnVivo([], 0);
+            return;
+        }
+
+        let html = '';
+        let total = 0;
+        const itemsParaPantalla = [];
+
+        ids.forEach(function (id) {
+            const item = carrito[id];
+            const subtotal = item.precio * item.cantidad;
+            total += subtotal;
+            itemsParaPantalla.push({
+                nombre: item.nombre, precio: item.precio,
+                cantidad: item.cantidad, imagen: item.imagen,
+            });
+            html += `
+                <div class="carrito-item">
+                    <div>
+                        <div>${item.nombre}</div>
+                        <div class="text-muted small">Bs ${item.precio.toFixed(2)} c/u</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 cantidad-controles">
+                        <button class="btn btn-sm btn-outline-secondary" onclick="cambiarCantidad(${id}, -1)">-</button>
+                        <span>${item.cantidad}</span>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="cambiarCantidad(${id}, 1)">+</button>
+                    </div>
+                </div>`;
+        });
+        cont.innerHTML = html;
+        document.getElementById('carritoTotal').textContent = 'Bs ' + total.toFixed(2);
+        enviarCarritoEnVivo(itemsParaPantalla, total);
+    }
+
+    let envioEnVivoTimeout = null;
+    function enviarCarritoEnVivo(items, total) {
+        // Evita saturar el servidor si el usuario hace clic muy rápido
+        clearTimeout(envioEnVivoTimeout);
+        envioEnVivoTimeout = setTimeout(function () {
+            fetch('/pos/actualizar-carrito-vivo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: items, total: total }),
+            }).catch(function () { /* silencioso: no bloquea el POS si falla */ });
+        }, 200);
+    }
+
+    function agregarAlCarrito(platoId, nombre, precio, imagen) {
+        if (!carrito[platoId]) {
+            carrito[platoId] = { nombre: nombre, precio: precio, cantidad: 0, imagen: imagen };
+        }
+        carrito[platoId].cantidad += 1;
+        renderCarrito();
+    }
+
+    function cambiarCantidad(platoId, delta) {
+        if (!carrito[platoId]) return;
+        carrito[platoId].cantidad += delta;
+        if (carrito[platoId].cantidad <= 0) {
+            delete carrito[platoId];
+        }
+        renderCarrito();
+    }
+
+    function mostrarFormClienteNuevo() {
+        document.getElementById('formClienteNuevo').style.display = 'block';
+    }
+
+    function abrirPantallaCliente() {
+        window.open('/pos/pantalla-cliente', 'pantallaCliente', 'width=900,height=700');
+    }
+
+    function abrirCambiarImagen(event, platoId) {
+        event.stopPropagation(); // evita que el clic tambien agregue el plato al carrito
+        document.getElementById('cambiarImagenPlatoId').value = platoId;
+        document.getElementById('cambiarImagenArchivo').value = '';
+        document.getElementById('cambiarImagenUrl').value = '';
+        document.getElementById('cambiarImagenMensaje').innerHTML = '';
+        $('#modalCambiarImagen').modal('show');
+    }
+
+    async function guardarImagenPlato() {
+        const platoId = document.getElementById('cambiarImagenPlatoId').value;
+        const archivo = document.getElementById('cambiarImagenArchivo').files[0];
+        const url = document.getElementById('cambiarImagenUrl').value.trim();
+        const mensajeBox = document.getElementById('cambiarImagenMensaje');
+
+        if (!archivo && !url) {
+            mensajeBox.innerHTML = '<div class="alert alert-warning">Sube un archivo o pega una URL.</div>';
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('plato_id', platoId);
+        if (archivo) {
+            formData.append('archivo', archivo);
+        } else {
+            formData.append('url', url);
+        }
+
+        mensajeBox.innerHTML = '<div class="alert alert-info">Guardando imagen...</div>';
+
+        try {
+            const resp = await fetch('/pos/cambiar-imagen-plato', { method: 'POST', body: formData });
+            const data = await resp.json();
+
+            if (data.ok) {
+                const elemento = document.getElementById('img-plato-' + platoId);
+                if (elemento.tagName === 'IMG') {
+                    elemento.src = data.imagen_url + '?t=' + Date.now(); // evita cache
+                } else {
+                    // Era el icono de "sin imagen"; lo reemplazamos por una imagen real
+                    const img = document.createElement('img');
+                    img.id = elemento.id;
+                    img.src = data.imagen_url + '?t=' + Date.now();
+                    elemento.replaceWith(img);
+                }
+                const modalEl = document.getElementById('modalCambiarImagen');
+                $(modalEl).modal('hide');
+            } else {
+                mensajeBox.innerHTML = `<div class="alert alert-danger">${data.error || 'No se pudo guardar la imagen.'}</div>`;
+            }
+        } catch (e) {
+            mensajeBox.innerHTML = '<div class="alert alert-danger">Error de conexión al guardar la imagen.</div>';
+        }
+    }
+
+    async function crearClienteNuevo() {
+        const nombre = document.getElementById('nuevoClienteNombre').value.trim();
+        const apellido = document.getElementById('nuevoClienteApellido').value.trim();
+
+        if (!nombre || !apellido) {
+            alert('Nombre y apellido son obligatorios.');
+            return;
+        }
+
+        const resp = await fetch('/pos/cliente-nuevo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: nombre, apellido: apellido }),
+        });
+        const data = await resp.json();
+
+        if (data.ok) {
+            const sel = document.getElementById('selCliente');
+            const opt = document.createElement('option');
+            opt.value = data.cliente.id;
+            opt.textContent = data.cliente.nombre;
+            opt.selected = true;
+            sel.appendChild(opt);
+            document.getElementById('formClienteNuevo').style.display = 'none';
+            document.getElementById('nuevoClienteNombre').value = '';
+            document.getElementById('nuevoClienteApellido').value = '';
+        } else {
+            alert(data.error || 'No se pudo crear el cliente.');
+        }
+    }
+
+    async function confirmarVenta() {
+        const clienteId = document.getElementById('selCliente').value;
+        const paraLlevar = document.getElementById('chkParaLlevar').checked;
+        const mesaId = document.getElementById('selMesa').value;
+        const empleadoId = document.getElementById('selEmpleado').value;
+        const mensajeBox = document.getElementById('posMensaje');
+
+        if (!clienteId || !empleadoId) {
+            mensajeBox.innerHTML = '<div class="alert alert-warning">Selecciona cliente y empleado.</div>';
+            return;
+        }
+        if (!paraLlevar && !mesaId) {
+            mensajeBox.innerHTML = '<div class="alert alert-warning">Selecciona una mesa, o marca "Para llevar".</div>';
+            return;
+        }
+
+        const ids = Object.keys(carrito);
+        if (ids.length === 0) {
+            mensajeBox.innerHTML = '<div class="alert alert-warning">El carrito está vacío.</div>';
+            return;
+        }
+
+        const carritoPayload = ids.map(function (id) {
+            return { plato_id: parseInt(id), cantidad: carrito[id].cantidad };
+        });
+
+        mensajeBox.innerHTML = '<div class="alert alert-info">Registrando venta...</div>';
+
+        try {
+            const resp = await fetch('/pos/registrar-venta', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    cliente_id: parseInt(clienteId),
+                    mesa_id: paraLlevar ? null : parseInt(mesaId),
+                    empleado_id: parseInt(empleadoId),
+                    para_llevar: paraLlevar,
+                    carrito: carritoPayload,
+                }),
+            });
+            const data = await resp.json();
+
+            if (data.ok) {
+                mensajeBox.innerHTML = `<div class="alert alert-success">✅ Venta #${data.pedido_id} registrada por Bs ${data.total.toFixed(2)}.</div>`;
+                carrito = {};
+                renderCarrito();
+            } else {
+                mensajeBox.innerHTML = `<div class="alert alert-danger">${data.error || 'No se pudo registrar la venta.'}</div>`;
+            }
+        } catch (e) {
+            mensajeBox.innerHTML = '<div class="alert alert-danger">Error de conexión al registrar la venta.</div>';
+        }
+    }
+</script>
+{% endblock %}

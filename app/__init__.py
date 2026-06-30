@@ -34,7 +34,10 @@ def create_app():
         
         # Importar vista pública
         from app.views.public import PublicView
-        
+
+        # Importar Punto de Venta (POS)
+        from app.views.pos_view import PosView
+
         # Registrar vistas CRUD
         appbuilder.add_view(CategoriaView, "Categorías", icon="fa-folder-open", category="Administracion")
         appbuilder.add_view(IngredienteView, "Ingredientes", icon="fa-cube", category="Administracion")
@@ -52,6 +55,9 @@ def create_app():
         appbuilder.add_view(GraficaVentasMesView, "Ventas por mes", icon="fa-line-chart", category="Gráficas")
         appbuilder.add_view(GraficaPlatosCategoriaView, "Platos por categoría", icon="fa-pie-chart", category="Gráficas")
         appbuilder.add_view(GraficaTopPlatosView, "Top 5 platos", icon="fa-bar-chart", category="Gráficas")
+
+        # Registrar Punto de Venta (sin menú; se accede desde /panel)
+        appbuilder.add_view_no_menu(PosView)
         
         # Registrar página pública (sin menú, ya que FAB_INDEX_VIEW en config.py
         # la convierte en la vista raíz "/")

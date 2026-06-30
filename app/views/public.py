@@ -58,6 +58,7 @@ class PublicView(BaseView):
                 {"titulo": "Empleados activos", "valor": total_empleados, "icono": "👥", "color": "info"},
             ]
             accesos = [
+                {"titulo": "Punto de Venta", "icono": "🧾", "url": "/pos/", "color": "success"},
                 {"titulo": "Categorías", "icono": "📂", "url": "/categoriaview/list/", "color": "primary"},
                 {"titulo": "Platos", "icono": "🍽️", "url": "/platoview/list/", "color": "primary"},
                 {"titulo": "Ingredientes", "icono": "🥗", "url": "/ingredienteview/list/", "color": "primary"},
@@ -88,6 +89,7 @@ class PublicView(BaseView):
                 {"titulo": "Promedio por pedido", "valor": f"Bs {promedio:,.2f}", "icono": "📊", "color": "primary"},
             ]
             accesos = [
+                {"titulo": "Punto de Venta", "icono": "🧾", "url": "/pos/", "color": "success"},
                 {"titulo": "Reporte de Ventas", "icono": "📈", "url": "/reporte_ventas/", "color": "success"},
                 {"titulo": "Platos Populares", "icono": "🏆", "url": "/reporte_platos_populares/", "color": "success"},
                 {"titulo": "Ingredientes Usados", "icono": "📦", "url": "/reporte_ingredientes_usados/", "color": "success"},
@@ -107,6 +109,7 @@ class PublicView(BaseView):
                 {"titulo": "Clientes registrados", "valor": total_clientes, "icono": "👤", "color": "info"},
             ]
             accesos = [
+                {"titulo": "Punto de Venta", "icono": "🧾", "url": "/pos/", "color": "success"},
                 {"titulo": "Clientes", "icono": "👤", "url": "/clienteview/list/", "color": "primary"},
                 {"titulo": "Mesas", "icono": "🪑", "url": "/mesaview/list/", "color": "primary"},
             ]
