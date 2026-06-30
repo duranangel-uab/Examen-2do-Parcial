@@ -8,9 +8,9 @@ class PlatoView(ModelView):
     
     list_columns = ['id', 'nombre', 'precio', 'disponible', 'categoria']
     search_columns = ['nombre', 'categoria']
-    add_columns = ['nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria']
-    edit_columns = ['nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria']
-    show_columns = ['id', 'nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria']
+    add_columns = ['nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria', 'imagen_url']
+    edit_columns = ['nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria', 'imagen_url']
+    show_columns = ['id', 'nombre', 'descripcion', 'precio', 'disponible', 'tiempo_preparacion', 'categoria', 'imagen_url']
     
     label_columns = {
         'id': 'ID',
@@ -19,5 +19,6 @@ class PlatoView(ModelView):
         'precio': 'Precio',
         'disponible': 'Disponible',
         'tiempo_preparacion': 'Tiempo de Preparación (min)',
-        'categoria': 'Categoría'
+        'categoria': 'Categoría',
+        'imagen_url': 'URL de la imagen del plato',
     }

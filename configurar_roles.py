@@ -98,5 +98,23 @@ with app.app_context():
             role.permissions.append(pvm_panel)
             print(f"  + {role.name}: can_panel en PublicView")
 
+    print("\nAsignando acceso al Punto de Venta (/pos/) a Supervisor y Usuario...")
+    permisos_pos = (
+        "can_index",
+        "can_cliente_nuevo",
+        "can_registrar_venta",
+        "can_cerrar_venta",
+        "can_actualizar_carrito_vivo",
+        "can_carrito_vivo",
+        "can_pantalla_cliente",
+        "can_cambiar_imagen_plato",
+    )
+    for role in (supervisor, usuario):
+        for nombre_permiso in permisos_pos:
+            pvm_pos = sm.find_permission_view_menu(nombre_permiso, "PosView")
+            if pvm_pos and pvm_pos not in role.permissions:
+                role.permissions.append(pvm_pos)
+                print(f"  + {role.name}: {nombre_permiso} en PosView")
+
     db.session.commit()
     print("\n🎉 Roles y permisos configurados exitosamente.")

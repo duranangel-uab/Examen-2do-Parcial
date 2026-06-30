@@ -9,6 +9,7 @@ class Plato(db.Model):
     precio = db.Column(db.Float, nullable=False)
     disponible = db.Column(db.Boolean, default=True)
     tiempo_preparacion = db.Column(db.Integer, nullable=True)
+    imagen_url = db.Column(db.String(300), nullable=True)
     
     # Clave foránea a Categoria
     categoria_id = db.Column(db.Integer, db.ForeignKey('categoria.id'), nullable=False)
